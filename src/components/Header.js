@@ -11,7 +11,7 @@ const Header = (props) => {
   };
 
   return (
-    <header className='bg-white w-screen h-20 flex justify-around items-center lg:hidden'>
+    <header className='bg-white w-screen h-20 flex fixed justify-around items-center lg:hidden'>
       <Icon
         icon='ic:round-arrow-back-ios'
         color='#4a3f3f'

@@ -77,6 +77,27 @@ const eventsReducer = (state, action) => {
         e.id === action.eventId ? { ...e, todos: changedPrioTodos } : e
       );
 
+    case 'addGoogleEventId':
+      return state.map((e) =>
+        e.id === action.eventId
+          ? {
+              ...e,
+              googleEventId: action.googleEventId,
+              googleEventLink: action.googleEventLink,
+            }
+          : e
+      );
+
+    case 'editEvent':
+      return state.map((e) =>
+        e.id === action.eventId
+          ? { ...e, name: action.name, desc: action.desc }
+          : e
+      );
+
+    case 'deleteEvent':
+      console.log('deleted');
+      return state.filter((e) => e.id !== action.eventId);
     default:
       return state;
   }

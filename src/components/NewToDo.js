@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { EventsContext } from '../contexts/EventsContext';
 import PrioSelector from './PrioSelector';
 
@@ -10,8 +10,13 @@ const NewToDo = (props) => {
   const [prio, setPrio] = useState('');
   const { dispatch } = useContext(EventsContext);
 
-  const handleClick = () => {
-    if (taskName.length > 0 && assignee.length > 0) {
+  const handleClick = (type) => {
+    if (
+      prio !== '' &&
+      taskName.length > 0 &&
+      assignee.length > 0 &&
+      type === 'add'
+    ) {
       dispatch({
         type: 'addTodo',
         eventId: props.eventId,
@@ -19,13 +24,30 @@ const NewToDo = (props) => {
         assignee,
         prio,
       });
-      setPrioSelector(false);
-      setPrio('');
-      setTaskName('');
-      setAssignee('');
-      props.setAddTask(false);
+    } else if (
+      (prio !== '' || taskName.length > 0 || assignee.length > 0) &&
+      type === 'add'
+    ) {
+      return false;
     }
+    setPrioSelector(false);
+    setPrio('');
+    setTaskName('');
+    setAssignee('');
+    props.setAddTask(false);
   };
+
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+        handleClick('add');
+      }
+    };
+    document.addEventListener('keydown', listener);
+    return () => {
+      document.removeEventListener('keydown', listener);
+    };
+  }, [taskName, assignee]);
 
   return (
     <div className='flex flex-row w-full justify-between items-center relative'>
@@ -74,8 +96,13 @@ const NewToDo = (props) => {
         />
         <Icon
           icon='fluent:checkmark-12-filled'
-          className='ml-4 w-8 h-10'
-          onClick={handleClick}
+          className='ml-4 w-8 h-10 hover:text-green-500 active:text-green-700 cursor-pointer'
+          onClick={() => handleClick('add')}
+        />
+        <Icon
+          icon='entypo:cross'
+          className='ml-4 w-8 h-10 hover:text-red-500 active:text-red-700 cursor-pointer'
+          onClick={() => handleClick('remove')}
         />
       </div>
     </div>

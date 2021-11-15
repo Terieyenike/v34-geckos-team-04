@@ -1,47 +1,46 @@
 import React, { useContext, useState } from 'react';
-import { useGoogleLogin } from 'react-google-login';
 import { UserContext } from '../contexts/UserContext';
 import loginPagePic from '../assets/login_page.png';
 import GoogleLogo from '../components/shared/GoogleLogo';
 import Alert from '../components/shared/Alert';
-
-const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+import { getSignedInUserInfo, signInToGoogle } from '../utils/api';
 
 const LoginPage = () => {
   const { setUserData } = useContext(UserContext);
   const [error, setError] = useState(null);
 
-  const onSuccess = (res) => {
-    const { name, email, imageUrl } = res.profileObj;
-    setUserData({ loggedIn: true, name, email, imageUrl });
+  const getAuthToGoogle = async () => {
+    let successful = await signInToGoogle();
+    if (successful) {
+      getGoogleAuthedInfo();
+    }
+
   };
 
-  const onFailure = (res) => {
-    console.error('Login failed!', res);
-    setError(res.details);
+  const getGoogleAuthedInfo = async () => {
+    let info = await getSignedInUserInfo();
+    if (info) {
+      setUserData({
+        loggedIn: true,
+        ...info,
+      });
+    }
   };
-
-  // onSuccess and onFailure are required callbacks for login
-  // if isSignedIn true it will return user data on load, if user gave the app permission
-
-  const { signIn } = useGoogleLogin({
-    onSuccess,
-    onFailure,
-    clientId: CLIENT_ID,
-    isSignedIn: true,
-    accessType: 'offline',
-  });
 
   return (
-    <div className='flex flex-col h-screen w-screen items-center justify-around'>
-      <h1 className='text-6xl font-bold'>Meeting App?</h1>
-      <img src={loginPagePic} alt='Meeting app' />
+    <div className='flex flex-col justify-around items-center h-screen py-20'>
+      <div className='flex flex-col items-center'>
+        <h1 className='text-5xl lg:text-6xl font-bold text-center mb-8'>
+          Meeting App?
+        </h1>
+        <img src={loginPagePic} alt='Meeting app' className='self-center' />
+      </div>
       <button
-        className='bg-white border rounded-full hover:bg-blue-50 hover:border-blue-200 flex flex-row justify-center leading-8 transition duration-200 pl-1 pr-4 py-2'
-        onClick={signIn}
+        className='flex justify-center items-center w-64 h-12 pr-4 bg-white border rounded-full transition duration-200 hover:bg-blue-100 hover:border-blue-300'
+        onClick={() => getAuthToGoogle()}
       >
-        <GoogleLogo width='32px' height='32px' />
-        <span>Sign in with Google</span>
+        <GoogleLogo width='48px' height='48px' />
+        <span className='text-md md:text-lg'>Sign in with Google</span>
       </button>
       {error && <Alert error='Login failed!' detail={error} />}
     </div>

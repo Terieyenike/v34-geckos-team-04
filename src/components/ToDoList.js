@@ -26,7 +26,7 @@ const ToDoList = (props) => {
       <button
         className={`flex justify-center items-center w-40 ${
           addTask ? 'hidden' : 'block'
-        }`}
+        } rounded-full hover:bg-gray-200 active:bg-gray-400`}
         onClick={() => setAddTask(true)}
       >
         <Icon icon='entypo:plus' className='w-10 h-10' />
