@@ -107,12 +107,12 @@ export default function EventSubMenu(props) {
 
   const icon = eventSubMenu.map((icon) => {
     return (
-      <li key={icon.name} className='lg:flex lg:items-center'>
+      <li key={icon.name} className="lg:flex lg:items-center">
         {icon.isNavLink ? (
           <NavLink to={icon.path}>
             <Icon
               icon={icon.icon}
-              className='text-[#F0D2AC] cursor-pointer hover:text-yellow-400 active:text-yellow-600'
+              className="text-[#F0D2AC] cursor-pointer hover:text-yellow-400 active:text-yellow-600"
               width={36}
               height={36}
             />
@@ -124,12 +124,12 @@ export default function EventSubMenu(props) {
               width={36}
               height={36}
               onClick={() => handleIconClick(icon.name)}
-              className='text-[#F0D2AC] cursor-pointer hover:text-yellow-400 active:text-yellow-600'
+              className="text-[#F0D2AC] cursor-pointer hover:text-yellow-400 active:text-yellow-600"
             />
             {copy && icon.name === 'Share' && (
-              <div className='absolute bottom-12 lg:top-12 lg:bottom-0 bg-gray-600 text-white h-10 px-2 leading-10 rounded-xl'>
+              <div className="absolute h-10 px-2 leading-10 text-white bg-gray-600 bottom-12 lg:top-12 lg:bottom-0 rounded-xl">
                 <p>Event link copied!</p>
-                <span className='absolute bg-gray-600 w-3 h-3 lg:-top-1 -bottom-1 left-4 transform rotate-45'></span>
+                <span className="absolute w-3 h-3 transform rotate-45 bg-gray-600 lg:-top-1 -bottom-1 left-4"></span>
               </div>
             )}
           </React.Fragment>
@@ -139,8 +139,8 @@ export default function EventSubMenu(props) {
   });
 
   return (
-    <nav className='bg-[#f9fafb] w-full h-10 fixed bottom-20 lg:w-1/4 lg:flex lg:flex-col lg:-top-0 lg:-right-0'>
-      <ul className='h-full flex justify-around items-center'>{icon}</ul>
+    <nav className="bg-[#f9fafb] w-full h-10 fixed bottom-20 lg:w-1/4 lg:flex lg:flex-col lg:-top-0 lg:-right-0">
+      <ul className="flex items-center justify-around h-full">{icon}</ul>
     </nav>
   );
 }
