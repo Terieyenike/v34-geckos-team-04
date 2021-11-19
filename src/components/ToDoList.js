@@ -13,11 +13,6 @@ const ToDoList = (props) => {
 
   return (
     <React.Fragment>
-      {/* Link is temporary until menu/header merged
-      It adds ability to go back to event info page */}
-      <Link to={`/events/${eventId}`} className=''>
-        {`< Back to event info`}
-      </Link>
       <ul className='mt-20'>
         {todos.map((todo) => {
           return <ToDoItem key={todo.id} eventId={eventId} todo={todo} />;

@@ -80,16 +80,6 @@ export default function EventInfo(props) {
   return (
     <div className='mb-20 lg:mt-20 lg:mb-0 flex flex-col items-center'>
       <li className='list-none w-full'>
-        {/* Link is temporary until menu/header merged */}
-        {/* It adds ability to go back to events page on mobile screens */}
-        {/* <Link
-          to='/events'
-          onClick={() => props.setActiveEvent(false)}
-          className='inline-block lg:hidden'
-        >
-          {`< Back to events`}
-        </Link> */}
-
         <div className='flex flex-row justify-around'>
           <div id='left'>
             <p>Name:</p>

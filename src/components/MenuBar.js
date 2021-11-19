@@ -83,6 +83,7 @@ const MenuBar = (props) => {
               src={userData.imageUrl}
               alt='Profile Avatar'
               className='h-12 w-12 m-2'
+              referrerPolicy='no-referrer'
             />
             <div>
               <div>{userData.name}</div>

@@ -27,10 +27,17 @@ const LoginPage = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex flex-col justify-around items-center h-screen py-20">
       <div className="flex flex-col items-center">
         <h1 className="text-5xl lg:text-6xl font-bold text-center mb-8">
           Meeting App?
+=======
+    <main className='flex flex-col justify-around items-center h-screen py-20'>
+      <div className='flex flex-col items-center'>
+        <h1 className='text-5xl lg:text-6xl font-bold text-center mb-8'>
+          readyevent
+>>>>>>> upstream/development
         </h1>
         <img src={loginPagePic} alt="Meeting app" className="self-center" />
       </div>
@@ -40,8 +47,13 @@ const LoginPage = () => {
         <GoogleLogo width="48px" height="48px" />
         <span className="text-md md:text-lg">Sign in with Google</span>
       </button>
+<<<<<<< HEAD
       {error && <Alert error="Login failed!" detail={error} />}
     </div>
+=======
+      {error && <Alert error='Login failed!' detail={error} />}
+    </main>
+>>>>>>> upstream/development
   );
 };
 export default LoginPage;

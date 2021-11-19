@@ -14,13 +14,26 @@ export default function EventsPage() {
   const { eventData: events } = useContext(EventsContext);
   const { userData } = useContext(UserContext);
   const { path } = useRouteMatch();
-  console.log('setActiveEent', activeEvent);
+  const [title, setTitle] = useState('');
+
+  console.log('activeEvent', activeEvent);
+
+  function handleEventItemClick(eventName) {
+    setActiveEvent(true);
+    setTitle(eventName);
+  }
 
   return (
     <React.Fragment>
-      <Header title='Breakfast' link={userData.imageUrl} returnBtn={true} />
+      <Header
+        title={activeEvent ? title : 'Events'}
+        link={userData.imageUrl}
+        returnBtn={true}
+        setActiveEvent={setActiveEvent}
+        activeEvent={activeEvent}
+      />
       <MenuBar setActiveEvent={setActiveEvent} />
-      <div className='flex flex-row justify-around h-[calc(100%-10rem)] lg:h-full lg:ml-40 xl:ml-56 relative top-20 lg:top-0'>
+      <main className='flex flex-row justify-around h-[calc(100%-10rem)] lg:h-full lg:ml-40 xl:ml-56 relative top-20 lg:top-0'>
         {!activeEvent && <Redirect to='/events' />}
         <div
           className={`lg:w-1/3 flex justify-center overflow-y-auto overflow-x-hidden ${
@@ -30,7 +43,10 @@ export default function EventsPage() {
           <ul className='flex flex-col space-y-10 items-center w-screen'>
             {events.map((event, index) => (
               <Link key={event.id} to={`/events/${event.id}`}>
-                <EventItem event={event} onClick={() => setActiveEvent(true)} />
+                <EventItem
+                  event={event}
+                  onClick={() => handleEventItemClick(event.name)}
+                />
               </Link>
             ))}
           </ul>
@@ -45,8 +61,7 @@ export default function EventsPage() {
               <NewEvent setActiveEvent={setActiveEvent} />
             </Route>
             <Route path={`/events/:eventId`} exact>
-              {/* setActiveEvent prop is temporary until menu/header merged */}
-              <EventInfo setActiveEvent={setActiveEvent} />
+              <EventInfo />
             </Route>
             <Route path='/events/:eventId/todos'>
               <ToDoList />
@@ -56,7 +71,7 @@ export default function EventsPage() {
             </Route>
           </Switch>
         </div>
-      </div>
+      </main>
     </React.Fragment>
   );
 }
