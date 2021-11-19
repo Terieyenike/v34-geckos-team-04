@@ -1,22 +1,22 @@
+import React, { useState, useContext } from 'react';
+import { Link, Route, Switch, Redirect, useRouteMatch } from 'react-router-dom';
 import EventItem from '../components/EventItem.js';
 import EventInfo from '../components/EventInfo.js';
-import React, { useState, useContext } from 'react';
 import { EventsContext } from '../contexts/EventsContext.js';
-import { Link, Route, Switch, Redirect, useRouteMatch } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext.js';
 import ToDoList from '../components/ToDoList.js';
 import Header from '../components/Header.js';
 import MenuBar from '../components/MenuBar.js';
-import { UserContext } from '../contexts/UserContext.js';
 import NewEvent from '../components/NewEvent.js';
+import AvailabilityCheck from '../components/Availability/AvailabilityCheck';
 
 export default function EventsPage() {
   const [activeEvent, setActiveEvent] = useState(false);
   const { eventData: events } = useContext(EventsContext);
   const { userData } = useContext(UserContext);
   const { path } = useRouteMatch();
+  const { dispatch } = useContext(EventsContext);
   const [title, setTitle] = useState('');
-
-  console.log('activeEvent', activeEvent);
 
   function handleEventItemClick(eventName) {
     setActiveEvent(true);
@@ -45,7 +45,13 @@ export default function EventsPage() {
               <Link key={event.id} to={`/events/${event.id}`}>
                 <EventItem
                   event={event}
-                  onClick={() => handleEventItemClick(event.name)}
+                  onClick={() => {
+                    handleEventItemClick(event.name);
+                    dispatch({
+                      type: 'selectEvent',
+                      eventId: event.id,
+                    });
+                  }}
                 />
               </Link>
             ))}
@@ -61,10 +67,13 @@ export default function EventsPage() {
               <NewEvent setActiveEvent={setActiveEvent} />
             </Route>
             <Route path={`/events/:eventId`} exact>
-              <EventInfo />
+              <EventInfo setActiveEvent={setActiveEvent} />
             </Route>
             <Route path='/events/:eventId/todos'>
               <ToDoList />
+            </Route>
+            <Route path='/events/:eventId/availability'>
+              <AvailabilityCheck />
             </Route>
             <Route path='*'>
               <p>Select an event to view</p>

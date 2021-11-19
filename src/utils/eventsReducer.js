@@ -1,10 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
 const eventsReducer = (state, action) => {
+  let availability;
+  if (action.eventId) {
+    availability = state.find((e) => e.id === action.eventId).availability;
+  }
+
   let todos;
   if (action.eventId) {
     todos = state.find((e) => e.id === action.eventId).todos;
   }
+
   switch (action.type) {
     case 'toggleTodo':
       // gets event todos from state
@@ -44,11 +50,47 @@ const eventsReducer = (state, action) => {
         desc: action.desc,
         start: null,
         end: null,
+        timezone: null,
+        selected: false,
         creator: action.creator,
         todos: [],
+        availability: [],
       };
-
       return [...state, newEvent];
+    case 'selectEvent':
+      return state.map((e) =>
+        action.eventId === e.id
+          ? { ...e, selected: true }
+          : { ...e, selected: false }
+      );
+    case 'setNewDate':
+      const { newDate } = action;
+      return state.map((e) =>
+        action.eventId === e.id ? { ...e, [action.setting]: newDate } : e
+      );
+    case 'addSchedule':
+      const newSchedule = {
+        username: action.userName,
+        schedules: action.schedule,
+      };
+      availability.push(newSchedule);
+      return state.map((e) =>
+        e.id === action.eventId ? { ...e, availability } : e
+      );
+    case 'deleteSchedule':
+      const deletedAvailability = availability.filter(
+        (a) => a.username !== action.userName
+      );
+      return state.map((e) =>
+        action.eventId === e.id
+          ? { ...e, availability: deletedAvailability }
+          : e
+      );
+    case 'setTimezone':
+      const { timezone } = action;
+      return state.map((e) =>
+        action.eventId === e.id ? { ...e, timezone } : e
+      );
 
     case 'changeTaskName':
       const nameChangedTodos = todos.map((todo) =>
@@ -96,10 +138,10 @@ const eventsReducer = (state, action) => {
       );
 
     case 'deleteEvent':
-      console.log('deleted');
       return state.filter((e) => e.id !== action.eventId);
     default:
       return state;
   }
 };
+
 export default eventsReducer;

@@ -23,11 +23,11 @@ export const initClient = (callback) => {
             }
           },
           (error) => {
-            console.log(error);
+            console.error(error);
           }
         );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
 };
@@ -37,7 +37,7 @@ export const checkSignInStatus = async () => {
     let status = await gapi.auth2.getAuthInstance().isSignedIn.get();
     return status;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -50,7 +50,7 @@ export const signInToGoogle = async () => {
       return true;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -62,7 +62,7 @@ export const signOutFromGoogle = () => {
     });
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -81,7 +81,7 @@ export const getSignedInUserInfo = async () => {
       return null;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -94,13 +94,10 @@ export const editCalendarEvent = (event, googleEventId) => {
         eventId: googleEventId,
       });
 
-      request.execute((event) => {
-        console.log('Event patched: ', event);
-        window.open(event.htmlLink);
-      });
+      request.execute();
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -112,11 +109,9 @@ export const deleteCalendarEvent = (googleEventId) => {
         eventId: googleEventId,
       });
 
-      request.execute((googleEventId) => {
-        console.log('Event deleted: ', googleEventId);
-      });
+      request.execute();
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
